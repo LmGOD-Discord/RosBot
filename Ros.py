@@ -15,19 +15,23 @@ else:
 bot = commands.Bot(description='Estou aqui para lhe servir! =]', command_prefix=commands.when_mentioned_or('!'), pm_help=False)
 
 
+
 @bot.event
 async def on_ready():
+    usuarios = str(len(bot.servers))
+    servidores = str(len(set(bot.get_all_members())))
+
     print('')
-    print('#=================================================================================#')
+    print('#=================================================#')
     print('# Logado com Nickname: {}'.format(bot.user.name))
     print('# Logado com ID: {}'.format(bot.user.id))
-    print('#=================================================================================#')
-    print('# Servidores conectados: {} servidores.'.format(str(len(bot.servers))))
-    print('# Usuários conectados: {} usuários.'.format(str(len(set(bot.get_all_members())))))
-    print('#=================================================================================#')
+    print('#=================================================#')
+    print('# Servidores conectados: {} servidores.'.format(usuarios))
+    print('# Usuários conectados: {} usuários.'.format(servidores))
+    print('#=================================================#')
     print('# Versão da biblioteca Discord.py: {}'.format(discord.__version__))
     print('# Versão da linguagem Python: {}'.format(platform.python_version()))
-    print('#=================================================================================#')
+    print('#=================================================#')
     print('')
 
 
