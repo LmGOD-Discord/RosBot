@@ -1,7 +1,10 @@
 import discord
 import asyncio
 import platform
+import traceback
 from discord.ext import commands
+from os import listdir
+from os.path import isfile, join
 
 import os
 is_prod = os.environ.get('IS_HEROKU', None)
@@ -11,59 +14,41 @@ else:
     import config
     config.token
 
-#startup_extensions = ["cogs/comandos"]
+client = discord.Client()
 bot = commands.Bot(description='Estou aqui para lhe servir! =]', command_prefix=commands.when_mentioned_or('!'), pm_help=False)
-
+bot.remove_command('help')
+cogs_dir = "cogs"
 
 
 @bot.event
 async def on_ready():
-    usuarios = str(len(bot.servers))
-    servidores = str(len(set(bot.get_all_members())))
+    usuarios_tot = str(len(bot.servers))
+    servidores_tot = str(len(set(bot.get_all_members())))
+    permissoes = '8'
+    link_convite = 'https://discordapp.com/oauth2/authorize?client_id={}&scope=bot&permissions={}'.format(bot.user.id, permissoes)
 
     print('')
-    print('#=================================================#')
-    print('# Logado com Nickname: {}'.format(bot.user.name))
-    print('# Logado com ID: {}'.format(bot.user.id))
-    print('#=================================================#')
-    print('# Servidores conectados: {} servidores.'.format(usuarios))
-    print('# Usuários conectados: {} usuários.'.format(servidores))
-    print('#=================================================#')
+    print('#================================================================================================================#')
+    print('# Logado com Nickname: {} (ID: {})'.format(bot.user.name, bot.user.id))
+    print('# Link de convite: {}'.format(link_convite))
+    print('#================================================================================================================#')
+    print('# Servidores conectados: {} servidores.'.format(usuarios_tot))
+    print('# Usuários conectados: {} usuários.'.format(servidores_tot))
+    print('#================================================================================================================#')
     print('# Versão da biblioteca Discord.py: {}'.format(discord.__version__))
     print('# Versão da linguagem Python: {}'.format(platform.python_version()))
-    print('#=================================================#')
+    print('#================================================================================================================#')
     print('')
 
-
-'''@bot.command()
-async def load(extension_name: str):
-    """Loads an extension."""
-    try:
-        bot.load_extension(extension_name)
-    except (AttributeError, ImportError) as e:
-        await bot.say("```py\n{}: {}\n```".format(type(e).__name__, str(e)))
-        return
-    await bot.say("{} loaded.".format(extension_name))
-
-
-@bot.command()
-async def unload(extension_name: str):
-    """Unloads an extension."""
-    bot.unload_extension(extension_name)
-    await bot.say("{} unloaded.".format(extension_name))
-
-
-class Main_Commands():
-    def __init__(self, bot):
-        self.bot = bot
-
+    await bot.change_presence(game=discord.Game(type=0, name="!ajuda | ON em {} servidores, para {} usuários".format(servidores_tot, usuarios_tot)), status=discord.Status("dnd"))
 
 if __name__ == "__main__":
-    for extension in startup_extensions:
-        try:
-            bot.load_extension(extension)
-        except Exception as e:
-            exc = '{}: {}'.format(type(e).__name__, e)
-            print('Failed to load extension {}. {}'.format(extension, exc))'''
+	for extension in [f.replace('.py', '') for f in listdir(cogs_dir) if isfile(join(cogs_dir, f))]:
+		try:
+			bot.load_extension(cogs_dir + "." + extension)
+			print(f'Extensão {extension} carregada com sucesso.')
+		except Exception as e:
+			print(f'Erro ao carregar a extensão {extension}.')
+			traceback.print_exc()
 
 bot.run(config.token)
