@@ -25,7 +25,7 @@ async def on_ready():
     usuarios_tot = str(len(bot.servers))
     servidores_tot = str(len(set(bot.get_all_members())))
     permissoes = '8'
-    link_convite = f'https://discordapp.com/oauth2/authorize?client_id={bot.user.id}&scope=bot&permissions={permissoes}')
+    link_convite = f'https://discordapp.com/oauth2/authorize?client_id={bot.user.id}&scope=bot&permissions={permissoes}'
 
     print('')
     print('#================================================================================================================#')
