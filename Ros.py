@@ -11,7 +11,7 @@ is_prod = os.environ.get('IS_HEROKU', None)
 if is_prod:
     token = os.environ.get('TOKEN')
 else:
-    from utils import config
+    from utils import config.py
     config.token
 
 client = discord.Client()
