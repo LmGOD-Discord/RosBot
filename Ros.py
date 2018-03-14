@@ -11,11 +11,11 @@ is_prod = os.environ.get('IS_HEROKU', None)
 if is_prod:
     token = os.environ.get('TOKEN')
 else:
-    import config
+    from utils import config
     config.token
 
 client = discord.Client()
-bot = commands.Bot(description='Estou aqui para lhe servir! =]', command_prefix=commands.when_mentioned_or('!'), pm_help=False)
+bot = commands.Bot(command_prefix=commands.when_mentioned_or('!'), pm_help=False)
 bot.remove_command('help')
 cogs_dir = "cogs"
 
@@ -40,7 +40,7 @@ async def on_ready():
     print('#================================================================================================================#')
     print('')
 
-    await bot.change_presence(game=discord.Game(type=0, name="!ajuda | ON em {} servidores, para {} usuários".format(servidores_tot, usuarios_tot)), status=discord.Status("dnd"))
+    await bot.change_presence(game=discord.Game(type=0, name="!ajuda | ON em {} servidores, para {} usuários!".format(servidores_tot, usuarios_tot)), status=discord.Status("dnd"))
 
 if __name__ == "__main__":
 	for extension in [f.replace('.py', '') for f in listdir(cogs_dir) if isfile(join(cogs_dir, f))]:
