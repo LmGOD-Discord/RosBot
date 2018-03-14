@@ -12,7 +12,7 @@ if is_prod:
     token = os.environ.get('TOKEN')
 else:
     from utils import config
-    config.token
+    token = config.token
 
 client = discord.Client()
 bot = commands.Bot(command_prefix=commands.when_mentioned_or('!'), pm_help=False)
@@ -52,4 +52,4 @@ if __name__ == "__main__":
 			print(f'Erro ao carregar a extensão {extension}.')
 			traceback.print_exc()
 
-bot.run(config.token)
+bot.run(token)
