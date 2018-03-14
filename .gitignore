@@ -1,1 +1,7 @@
-config.py
+.gitignore
+.gitignore.txt
+__pycache__/.
+cogs/__pycache__/
+utils/__pycache__/
+utils/config.py
+utils/db_config.py
