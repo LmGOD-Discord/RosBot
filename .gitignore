@@ -1,5 +1,4 @@
 .gitignore
-.gitignore.txt
 __pycache__/.
 cogs/__pycache__/
 utils/__pycache__/
