@@ -25,22 +25,23 @@ async def on_ready():
     usuarios_tot = str(len(bot.servers))
     servidores_tot = str(len(set(bot.get_all_members())))
     permissoes = '8'
-    link_convite = 'https://discordapp.com/oauth2/authorize?client_id={}&scope=bot&permissions={}'.format(bot.user.id, permissoes)
+    link_convite = f'https://discordapp.com/oauth2/authorize?client_id={bot.user.id}&scope=bot&permissions={permissoes}')
 
     print('')
     print('#================================================================================================================#')
-    print('# Logado com Nickname: {} (ID: {})'.format(bot.user.name, bot.user.id))
-    print('# Link de convite: {}'.format(link_convite))
+    print(f'# Logado com Nickname: {bot.user.name} (ID: {bot.user.id})')
+    print(f'# Link de convite: {link_convite}')
     print('#================================================================================================================#')
-    print('# Servidores conectados: {} servidores.'.format(usuarios_tot))
-    print('# Usuários conectados: {} usuários.'.format(servidores_tot))
+    print(f'# Servidores conectados: {usuarios_tot} servidores')
+    print(f'# Usuários conectados: {servidores_tot} usuários')
     print('#================================================================================================================#')
-    print('# Versão da biblioteca Discord.py: {}'.format(discord.__version__))
-    print('# Versão da linguagem Python: {}'.format(platform.python_version()))
+    print(f'# Versão da biblioteca Discord.py: {discord.__version__}')
+    print(f'# Versão da linguagem Python: {platform.python_version()}')
     print('#================================================================================================================#')
     print('')
 
     await bot.change_presence(game=discord.Game(type=0, name="!ajuda | ON em {} servidores, para {} usuários!".format(servidores_tot, usuarios_tot)), status=discord.Status("dnd"))
+
 
 if __name__ == "__main__":
 	for extension in [f.replace('.py', '') for f in listdir(cogs_dir) if isfile(join(cogs_dir, f))]:
