@@ -19,7 +19,7 @@ class Staff:
                 await self.bot.kick(member)
                 
                 embedkick = discord.Embed(title='Um membro foi expulso do servidor!')
-                embedkick.add_field(name='Membro: ', value = member.mention, inline=False)
+                embedkick.add_field(name='\nMembro: ', value = member.mention, inline=False)
                 embedkick.add_field(name='Staff: ', value = autor.mention, inline=False)
                 embedkick.add_field(name='Motivo: ', value = reason, inline=False)
 
@@ -41,7 +41,7 @@ class Staff:
                 await self.bot.ban(member)
                 
                 embedban = discord.Embed(title='Um membro foi banido do servidor!')
-                embedban.add_field(name='Membro: ', value = member.mention, inline=False)
+                embedban.add_field(name='\nMembro: ', value = member.mention, inline=False)
                 embedban.add_field(name='Staff: ', value = autor.mention, inline=False)
                 embedban.add_field(name='Motivo: ', value = reason, inline=False)
 
@@ -52,27 +52,31 @@ class Staff:
         else:
             await self.bot.say(f'{autor.mention}, você não possui permissão para usar esse comando.')
         
-        
-
-
-    @commands.command(guild_only=True, pass_context=True)
-    async def unban(self, ctx, member: discord.Member, *, reason = 'Nenhum motivo determinado.'):
-        """Unban um membro do servidor."""
+    @commands.command(guild_only=True, pass_context=True, aliases=['rename'])
+    async def renomear(self, ctx, member : discord.Member, *, nickname =""):
+        """Altera o apelido de um membro"""
+        nickantigo = member.display_name
         autor = ctx.message.author
-            
-        if ctx.message.author.server_permissions.unban_members:
-            try:
-                await self.bot.unban(member)
-                
-                embedunban = discord.Embed(title='Um membro foi desbanido do servidor!')
-                embedunban.add_field(name='Membro: ', value = member.mention, inline=False)
-                embedunban.add_field(name='Staff: ', value = autor.mention, inline=False)
-                embedunban.add_field(name='Motivo: ', value = reason, inline=False)
 
-                await self.bot.say(embed=embedunban)
-        
+        if ctx.message.author.server_permissions.manage_nicknames:
+            if nickname == "":
+                nickname = None
+            try:
+                await self.bot.change_nickname(member, nickname)
+                
+                embednick = discord.Embed(title='O apelido de um membro foi alterado no servidor!')
+                embednick.add_field(name='Nick antigo: ', value = nickantigo)
+                embednick.add_field(name='Nick atual: ', value = member.mention)
+                embednick.add_field(name='Alterado pelo Staff: ', value = autor.mention, inline=False)
+                
+                await self.bot.say(embed=embednick)
+
             except discord.Forbidden:
-                await self.bot.say(f'{autor.mention}, eu não possuo permissão para desbanir o membro {member.mention}.')
+                await self.bot.say(f'{autor.mention}, eu não possuo permissão para alterar o apelido do membro {member.mention}.')
+
+            except discord.HTTPException:
+                await self.bot.say(f'Não é possível alterar o apelido para o mesmo apelido.')
+
         else:
             await self.bot.say(f'{autor.mention}, você não possui permissão para usar esse comando.')
 
